@@ -1,44 +1,35 @@
-package com.leetcode.datastructure;
-
-import java.util.Arrays;
-
-public class RotateArray {
-    public static void main(String[] args){
-        RotateArray test = new RotateArray();
-        int[] inputArrays = new int[]{1,2,3,4,5,6,7};
-        int k = 3;
-        test.RotateArray(inputArrays, k);
-        //[7,1,2,3,4,5,6]
-        //[6,7,1,2,3,4,5]
-        //[5,6,7,1,2,3,4]
-        //[4,5,6,7,1,2,3]
-    }
-    public void RotateArray(int[] nums, int k) {
-
-        int outputArray[] = new int[nums.length];
-        int length = nums.length;
-        k = k % length;
-        outputArray = nums;
-        for (int i=0; i < nums.length; i++){
-            outputArray[i] = nums[(i+k)%length];
-            //nums[i] = outputArray[(i+k)%length];
+public void RotateArray(int[] nums, int k) {
+        k = k % nums.length;
+        boolean[] boolArray = new boolean[nums.length];
+        int n = 0;
+        int temp = nums[0];
+        int next;
+        int nextIndex = 0;
+        while(true){
+            nextIndex = (n+k)%nums.length;
+            if(boolArray[nextIndex]){
+                if(nextUnchecked(boolArray) < 0) {
+                    break;
+                } else {
+                    n = nextUnchecked(boolArray);
+                    temp = nums[n];
+                    continue;
+                }
+            }
+            next = nums[nextIndex];
+            nums[nextIndex]= temp;
+            temp = next;
+            boolArray[nextIndex] = true;
+            n = nextIndex;
         }
- //       nums = outputArray;
         System.out.println(Arrays.toString(nums));
-     //   System.out.println(outputArray);
-
-//        int shiftArray[] = new int[length%k];
-//        int sl = shiftArray.length;
-//        for (int j=0; j<sl; j++) {
-//            shiftArray[j]=nums[j];
-//        }
-//        for(int i=0; i < length-sl; i++) {
-//            nums[i] = nums[(i+k)%length];
-//        }
-//        for (int j=0; j<sl; j++)  {
-//            nums[length-sl+j]= shiftArray[j];
-//        }
-//        System.out.println(Arrays.toString(nums));
     }
 
-}
+    private int nextUnchecked(boolean[] boolArrays) {
+        for (int i=0; i<boolArrays.length; i++){
+            if(!boolArrays[i]) {
+                return i;
+            }
+        }
+        return -1;
+    }
